@@ -1,0 +1,31 @@
+require("dotenv").config();
+const cors = require("cors");
+const MongoClient = require("mongodb").MongoClient;
+const bodyParser = require("body-parser");
+const express = require("express");
+const app = express();
+const apiPort = 5050;
+let db;
+
+app.use(cors());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+MongoClient.connect(
+  `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@beerapp-etjjl.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`,
+  { useNewUrlParser: true, useUnifiedTopology: true },
+  (err, client) => {
+    if (err) return console.log(err);
+    db = client.db("BeerApp");
+  }
+);
+
+app.get("/api/beers", (req, res) => {
+  db.collection("Beer List")
+    .find()
+    .toArray(function (err, results) {
+      res.json(results);
+    });
+});
+
+app.listen(apiPort, () => console.log(`Server running on port ${apiPort}`));
