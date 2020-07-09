@@ -27,5 +27,12 @@ app.get("/api/beers", (req, res) => {
       res.json(results);
     });
 });
+app.get("/api/access", (req, res) => {
+  db.collection("Access")
+    .find()
+    .toArray(function (err, results) {
+      res.json(results);
+    });
+});
 
 app.listen(apiPort, () => console.log(`Server running on port ${apiPort}`));
