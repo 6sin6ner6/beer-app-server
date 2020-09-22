@@ -46,4 +46,6 @@ app.post("/api/beers", upload.any(), (req, res) => {
   db.collection("Beer List").insertOne(data);
 });
 
-app.listen(apiPort, () => console.log(`Server running on port ${apiPort}`));
+app.listen(process.env.PORT || apiPort, () =>
+  console.log(`Server running on port ${apiPort}`)
+);
